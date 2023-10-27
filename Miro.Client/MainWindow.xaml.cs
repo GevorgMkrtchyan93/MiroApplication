@@ -1,7 +1,9 @@
-﻿using Miro.Client.Views;
+﻿using Miro.Client.ViewModels;
+using Miro.Client.Views;
 
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace Miro.Client
 {
@@ -14,12 +16,13 @@ namespace Miro.Client
         {
             InitializeComponent();
 
+            DataContext = new RegisterViewModel(new Miro.Client.Services.NavigationService<RegisterView>());
             Loaded += MainWindow_Loaded;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Navigate<LoginView>();
+            Navigate<RegisterView>();
         }
 
         public static MainWindow Instance { get; set; }
