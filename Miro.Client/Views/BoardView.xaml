@@ -7,6 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Canvas x:Name="DrawingCanvas" Grid.Row="1" Background="White"
+                MouseLeftButtonDown="DrawingCanvas_MouseLeftButtonDown"
+                MouseLeftButtonUp="DrawingCanvas_MouseLeftButtonUp"
+                MouseMove="DrawingCanvas_MouseMove"/>
     </Grid>
 </UserControl>

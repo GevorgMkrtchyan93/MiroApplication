@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 
 using System;
+using System.Drawing;
 using System.Threading.Tasks;
 
 namespace Miro.Client.Models
@@ -45,6 +46,11 @@ namespace Miro.Client.Models
         public async Task SendAsync()
         {
             await Connection.InvokeAsync("SendMessage", Username, "Test");
+        }
+
+        public async Task SendDrawingCommand(double x1, double y1, double x2, double y2)
+        {
+            await Connection.InvokeAsync("SendDrawingCommand", x1, y1, x2, y2);
         }
     }
 }
