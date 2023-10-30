@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+
 using Miro.Client.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +24,6 @@ namespace Miro.Client.Views
     /// </summary>
     public partial class BoardView : UserControl
     {
-        private Line _currentLine;
         private Point startPoint;
         private Point endPoint;
         private bool isDrawing = false;
@@ -30,6 +31,15 @@ namespace Miro.Client.Views
         public BoardView()
         {
             InitializeComponent();
+            this.MouseDown += DrawingCanvas_MouseLeftButtonDown;
+            this.MouseUp += DrawingCanvas_MouseLeftButtonUp;
+            this.MouseMove += DrawingCanvas_MouseMove;
+            ApplicationContext.Instance.ReceivedDrawingEvent += Instance_ReceivedDrawingEvent;
+        }
+
+        private void Instance_ReceivedDrawingEvent(double arg1, double arg2, double arg3, double arg4)
+        {
+            DrawLine(new Point(arg1, arg2), new Point(arg3, arg4));
         }
 
         private void DrawingCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -42,32 +52,34 @@ namespace Miro.Client.Views
         {
             isDrawing = false;
             endPoint = e.GetPosition(DrawingCanvas);
-            DrawLine(startPoint, endPoint);
-            await ApplicationContext .Instance.SendDrawingCommand(startPoint.X, startPoint.Y, endPoint.X, endPoint.Y);
+            await ApplicationContext.Instance.SendDrawingCommand(startPoint.X, startPoint.Y, endPoint.X, endPoint.Y);
         }
 
-        private void DrawingCanvas_MouseMove(object sender, MouseEventArgs e)
+        private async void DrawingCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (isDrawing)
             {
                 endPoint = e.GetPosition(DrawingCanvas);
-                DrawLine(startPoint, endPoint);
+                await ApplicationContext.Instance.SendDrawingCommand(startPoint.X, startPoint.Y, endPoint.X, endPoint.Y);
                 startPoint = endPoint;
             }
         }
 
         private void DrawLine(Point start, Point end)
         {
-            _currentLine = new Line();
-            _currentLine.Stroke = Brushes.Black;
-            _currentLine.X1 = start.X;
-            _currentLine.Y1 = start.Y;
-            _currentLine.X2 = end.X;
-            _currentLine.Y2 = end.Y;
+            Dispatcher.Invoke(() =>
+            {
+                var _currentLine = new Line();
+                _currentLine.Stroke = Brushes.Black;
+                _currentLine.X1 = start.X;
+                _currentLine.Y1 = start.Y;
+                _currentLine.X2 = end.X;
+                _currentLine.Y2 = end.Y;
 
-            _currentLine.StrokeThickness = 2;
+                _currentLine.StrokeThickness = 2;
 
-            DrawingCanvas.Children.Add(_currentLine);
+                DrawingCanvas.Children.Add(_currentLine);
+            });
         }
     }
 }

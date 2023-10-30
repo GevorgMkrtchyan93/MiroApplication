@@ -23,9 +23,11 @@ namespace Miro.Client.Views
             MainWindow.Instance.Navigate<BoardView>();
         }
 
-        private void JoinBoardClick(object sender, RoutedEventArgs e)
+        private async void JoinBoardClick(object sender, RoutedEventArgs e)
         {
+            ApplicationContext.Instance.Connect();
             ApplicationContext.Instance.SelectedBoardId = int.Parse(boardIdTextBox.Text);
+            await ApplicationContext.Instance.SendAsync();
             MainWindow.Instance.Navigate<BoardView>();
         }
     }

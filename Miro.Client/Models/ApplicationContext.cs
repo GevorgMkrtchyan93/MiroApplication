@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 
@@ -18,6 +19,8 @@ namespace Miro.Client.Models
 
         public HubConnection Connection { get; set; }
 
+        public event Action<double, double, double, double> ReceivedDrawingEvent;
+
         public async void Connect()
         {
             // Create a SignalR connection
@@ -30,6 +33,11 @@ namespace Miro.Client.Models
             {
                 // Handle the received message here
                 // Update your UI or perform any necessary actions
+            });
+
+            Connection.On<double, double, double, double>("ReceiveDrawingCommand", (receivedX1, receivedY1, receivedX2, receivedY2) =>
+            {
+                ReceivedDrawingEvent?.Invoke(receivedX1, receivedY1, receivedX2, receivedY2);
             });
 
             try
