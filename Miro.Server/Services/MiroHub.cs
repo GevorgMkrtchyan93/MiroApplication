@@ -8,5 +8,10 @@ namespace Miro.Server.Services
         {
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
+
+        public async Task SendDrawingCommand(double x1, double y1, double x2, double y2)
+        {
+            await Clients.All.SendAsync("ReceiveDrawingCommand", x1, y1, x2, y2);
+        }
     }
 }
