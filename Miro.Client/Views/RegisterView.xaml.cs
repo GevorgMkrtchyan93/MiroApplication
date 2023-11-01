@@ -1,4 +1,4 @@
-﻿using Miro.Client.Models;
+﻿using Miro.Client.ViewModels;
 
 using System;
 using System.Collections.Generic;
@@ -18,19 +18,16 @@ using System.Windows.Shapes;
 namespace Miro.Client.Views
 {
     /// <summary>
-    /// Interaction logic for LoginView.xaml
+    /// Interaction logic for RegisterView.xaml
     /// </summary>
-    public partial class LoginView : Page
+    public partial class RegisterView : Page
     {
-        public LoginView()
+        RegisterViewModel ViewModel { get; }
+        public RegisterView(RegisterViewModel viewModel)
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ApplicationContext.Instance.Username = usernameTextBox.Text;
-            //MainWindow.Instance.Navigate<MainView>();
+            ViewModel = viewModel;
+            DataContext = viewModel;
         }
     }
 }
