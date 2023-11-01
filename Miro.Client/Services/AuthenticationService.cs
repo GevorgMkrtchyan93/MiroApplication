@@ -25,28 +25,21 @@ namespace Miro.Client.Services
         {
             try
             {
-                // Convert the loginModel to JSON
                 string jsonContent = JsonSerializer.Serialize(loginModel);
 
-                // Create a StringContent with JSON data
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-                // Send a POST request to your backend's login endpoint
                 var response = await _httpClient.PostAsync($"{baseApiUrl}login", content);
 
-                // Check if the request was successful
                 if (response.IsSuccessStatusCode)
                 {
-                    // Successful login
                     return true;
                 }
 
-                // Handle login failure
                 return false;
             }
             catch (Exception ex)
             {
-                // Handle exceptions
                 return false;
             }
         }
@@ -55,28 +48,21 @@ namespace Miro.Client.Services
         {
             try
             {
-                // Convert the registerModel to JSON
                 string jsonContent = JsonSerializer.Serialize(registerModel);
 
-                // Create a StringContent with JSON data
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-                // Send a POST request to your backend's registration endpoint
                 var response = await _httpClient.PostAsync($"{baseApiUrl}register", content);
 
-                // Check if the request was successful
                 if (response.IsSuccessStatusCode)
                 {
-                    // Successful registration
                     return true;
                 }
 
-                // Handle registration failure
                 return false;
             }
             catch (Exception ex)
             {
-                // Handle exceptions
                 return false;
             }
         }

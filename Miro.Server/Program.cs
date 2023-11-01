@@ -23,7 +23,7 @@ namespace Miro.Server
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<DBContext>(options =>
-                    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("Connect2")));
 
             var app = builder.Build();
 
