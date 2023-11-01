@@ -5,24 +5,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace Miro.Client.Interfaces
 {
     public interface INavigationService
     {
-        public interface INavigation<TView>
-        {
-            void NavigateTo(TView view);
+        void SetFrame(Frame frame);
 
-            void NavigateBack();
+        void NavigateTo(Type pageType, object? parameter = null);
 
-            TView CurrentView { get; }
+        void NavigateTo<T>(object? parameter = null) where T : Page;
 
-            /// <summary>
-            /// Event that is raised when a navigation occurs.
-            /// </summary>
-            event EventHandler<NavigationEventArgs<TView>> Navigated;
-        }
+        Task NavigateTo<TParameter>(Type pageType, TParameter param, object? parameter = null);
 
+        Task NavigateTo<TView, TParameter>(TParameter param, object? parameter = null)
+            where TView : Page;
+
+        void GoBack();
     }
 }

@@ -20,7 +20,7 @@ namespace Miro.Client.Views
     /// <summary>
     /// Interaction logic for LoginView.xaml
     /// </summary>
-    public partial class LoginView : UserControl
+    public partial class LoginView : Page
     {
         public LoginView()
         {
@@ -30,7 +30,7 @@ namespace Miro.Client.Views
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ApplicationContext.Instance.Username = usernameTextBox.Text;
-            MainWindow.Instance.Navigate<MainView>();
+            //MainWindow.Instance.Navigate<MainView>();
         }
     }
 }

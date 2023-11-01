@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Miro.Client.Services
 {
-    public class NavigationEventArgs<TView> : EventArgs
+    public class NavigationEventArgs<PageType> : EventArgs
     {
-        public TView View { get; }
+        public PageType View { get; }
 
-        public NavigationEventArgs(TView view)
+        public NavigationEventArgs(PageType view)
         {
             View = view;
         }

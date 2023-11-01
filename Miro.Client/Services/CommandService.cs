@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace Miro.Client.Services
 {
-    public class CommandService : ICommandService
+    public class CommandService : ICommand
     {
         private readonly Func<object, bool> _canExecute;
         private readonly Action<object> _execute;
