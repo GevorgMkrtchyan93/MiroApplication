@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 using Miro.Server.Entities;
+using Miro.Server.Interfaces;
 using Miro.Server.Services;
 
 using System;
@@ -17,6 +18,8 @@ namespace Miro.Server
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddScoped<IAccountManager, AccountManager>();
+            builder.Services.AddScoped<IRepository<User>,UserRepository<User>>();
             builder.Services.AddSignalR();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

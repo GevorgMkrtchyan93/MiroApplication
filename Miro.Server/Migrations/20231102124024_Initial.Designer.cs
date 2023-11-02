@@ -11,8 +11,8 @@ using Miro.Server.Entities;
 namespace Miro.Server.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20231101173708_Init")]
-    partial class Init
+    [Migration("20231102124024_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,10 +35,10 @@ namespace Miro.Server.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

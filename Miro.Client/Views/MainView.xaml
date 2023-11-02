@@ -12,5 +12,8 @@
             <TextBox x:Name="boardIdTextBox" Width="150"  Margin="10 0" VerticalAlignment="Center"/>
             <Button Content="Join" Padding="10 0" Click="JoinBoardClick"/>
         </StackPanel>-->
+        <StackPanel>
+            <Button Content="New Board"/>
+        </StackPanel>
     </Grid>
 </Page>

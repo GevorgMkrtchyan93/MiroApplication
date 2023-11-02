@@ -29,7 +29,7 @@ namespace Miro.Client.Services
 
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync($"{baseApiUrl}login", content);
+                var response = await _httpClient.PostAsync($"{baseApiUrl}login", content).ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -52,7 +52,8 @@ namespace Miro.Client.Services
 
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync($"{baseApiUrl}register", content);
+                var response = await _httpClient.PostAsync($"{baseApiUrl}register", content).ConfigureAwait(false);
+                var r = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
                 {

@@ -31,7 +31,7 @@ namespace Miro.Client
             services.AddScoped<INavigationService, NavigationService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<System.Windows.Input.ICommand, CommandService>();
-            services.AddScoped<IValidation<RegisterModel>, UserValidation>();
+            //services.AddScoped<IValidation<RegisterModel>, UserValidation>();
             //services.AddScoped<ICommandService, CommandService>();
             services.AddScoped<MainView>();
             services.AddScoped<MainWindow>();

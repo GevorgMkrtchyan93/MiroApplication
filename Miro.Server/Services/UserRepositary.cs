@@ -32,7 +32,6 @@ namespace Miro.Server.Services
 
         public async Task<bool> ExistsAsync(int id)
         {
-            //return await _dBContext.Set<TEntity>().AnyAsync(e => e.Id == id).ConfigureAwait(false);
             return true;
         }
 

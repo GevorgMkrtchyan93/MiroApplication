@@ -15,7 +15,6 @@ namespace Miro.Client.ViewModels
     {
         private readonly INavigationService _navigationService;
         private readonly IAuthenticationService _authenticationService;
-        private readonly IValidation<RegisterModel> _validationService;
         private string _password;
         private string _email;
         private string _userName;
@@ -52,11 +51,10 @@ namespace Miro.Client.ViewModels
 
         public ICommand RegisterCommand { get; }
 
-        public RegisterViewModel(INavigationService navigationService, IAuthenticationService authenticationService,IValidation<RegisterModel> validationService)
+        public RegisterViewModel(INavigationService navigationService, IAuthenticationService authenticationService)
         {
             _navigationService = navigationService;
             _authenticationService = authenticationService;
-            _validationService = validationService;
 
             RegisterCommand = new CommandService(CanExecute_Register, Execute_Register);
         }
