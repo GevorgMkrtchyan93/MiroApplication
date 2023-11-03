@@ -9,21 +9,25 @@
       Title="RegisterView">
 
     <Grid>
-        <Grid>
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="Register" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Register" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
 
-                <TextBlock Text="Email:" Margin="0,0,0,5"/>
-                <TextBox x:Name="EmailNameTextBox" Width="200" Height="30" Text="{Binding Email, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
+            <TextBlock Text="Email:" Margin="0,0,0,5"/>
+            <TextBox x:Name="EmailNameTextBox" Width="200" Height="30" Text="{Binding Email, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
 
-                <TextBlock Text="Username:" Margin="0,0,0,5"/>
-                <TextBox x:Name="UsernameTextBox" Width="200" Height="30" Text="{Binding UserName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,20"/>
+            <TextBlock Text="Username:" Margin="0,0,0,5"/>
+            <TextBox x:Name="UsernameTextBox" Width="200" Height="30" Text="{Binding UserName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,20"/>
 
-                <TextBlock Text="Password:" Margin="0,0,0,5"/>
-                <TextBox  x:Name="PasswordTextBox" Width="200" Height="30" Text="{Binding Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,30"/>
+            <TextBlock Text="Password:" Margin="0,0,0,5"/>
+            <TextBox  x:Name="PasswordTextBox" Width="200" Height="30" Text="{Binding Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,30"/>
 
-                <Button x:Name="RegisterButton" Content="Register" Width="100" Height="30" Command="{Binding RegisterCommand,UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
-        </Grid>
+            <TextBlock Margin="0, 2,0,10">
+                        If you have an account, <Hyperlink Command="{Binding CommandToNavigateToLoginPage}">
+                            <Run Text="click here" />
+                                                </Hyperlink>.
+            </TextBlock>
+
+            <Button x:Name="RegisterButton" Content="Register" Width="100" Height="30" Command="{Binding RegisterCommand,UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
     </Grid>
 </Page>

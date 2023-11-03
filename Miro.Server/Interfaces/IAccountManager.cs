@@ -1,4 +1,5 @@
 ﻿using Miro.Server.Entities;
+using Miro.Server.Services;
 using Miro.Shared.AuthenticationModels;
 
 namespace Miro.Server.Interfaces
@@ -6,6 +7,6 @@ namespace Miro.Server.Interfaces
     public interface IAccountManager
     {
         Task<bool> RegisterAsync(RegisterModel registerModel);
-        Task<bool> LoginAsync(LoginModel loginModel);
+        Task<ResultModel<User>> LoginAsync(LoginModel loginModel);
     }
 }

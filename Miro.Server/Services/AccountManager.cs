@@ -13,22 +13,50 @@ namespace Miro.Server.Services
         private readonly GenericMapper<LoginModel, User> _mapperLogin;
         public AccountManager(IRepository<User> userRepository)
         {
-           _userRepository = userRepository;
-           _mapperRegister = new GenericMapper<RegisterModel, User>();
-           _mapperLogin = new GenericMapper<LoginModel, User>();
+            _userRepository = userRepository;
+            _mapperRegister = new GenericMapper<RegisterModel, User>();
+            _mapperLogin = new GenericMapper<LoginModel, User>();
         }
 
-        public async Task<bool> LoginAsync(LoginModel loginModel)
+        public async Task<ResultModel<User>> LoginAsync(LoginModel loginModel)
         {
             var user = _mapperLogin.Map(loginModel);
-            Validate
-              .For(user)
-              .NotNull();
-            Validate
-              .For(user.UserName)
-              .NotNull();
-            await _userRepository.AddAsync(user).ConfigureAwait(false);
-            return true;
+            ResultModel<User> resultModel;
+            try
+            {
+                Validate
+                    .For(user)
+                    .NotNull();
+
+                Validate
+                    .For(user.Email)
+                    .NotNull();
+
+                var results = await _userRepository.GetAsync(u => u.Email == loginModel.Email && u.Password == loginModel.Password).ConfigureAwait(false);
+
+                if (results != null)
+                {
+                    resultModel = new ResultModel<User>(results);
+                }
+                else
+                {
+                    resultModel = new ResultModel<User>(null)
+                    {
+                        IsSuccess = false,
+                        Message = "Login failed. Invalid email or password."
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                resultModel = new ResultModel<User>(null)
+                {
+                    IsSuccess = false,
+                    Message = "An error occurred during login: " + ex.Message
+                };
+            }
+
+            return resultModel;
         }
 
         public async Task<bool> RegisterAsync(RegisterModel registerModel)

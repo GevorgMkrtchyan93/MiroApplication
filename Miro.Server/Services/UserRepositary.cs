@@ -2,6 +2,7 @@
 using Miro.Server.Interfaces;
 
 using System.Data.Entity;
+using System.Linq.Expressions;
 
 namespace Miro.Server.Services
 {
@@ -20,6 +21,12 @@ namespace Miro.Server.Services
             await _dBContext.SaveChangesAsync().ConfigureAwait(false);
         }
 
+        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter)
+        {
+            return await _dBContext.Set<TEntity>()
+                .FirstOrDefaultAsync(filter)
+                .ConfigureAwait(false);
+        }
         public async Task DeleteAsync(int id)
         {
             var entity = await GetByIdAsync(id).ConfigureAwait(false);
@@ -28,6 +35,11 @@ namespace Miro.Server.Services
 
             _dBContext.Set<TEntity>().Remove(entity);
             await _dBContext.SaveChangesAsync().ConfigureAwait(false);
+        }
+
+        public async Task GetAll()
+        {
+
         }
 
         public async Task<bool> ExistsAsync(int id)

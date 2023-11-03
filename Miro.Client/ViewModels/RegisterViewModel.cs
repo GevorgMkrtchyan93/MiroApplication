@@ -15,6 +15,7 @@ namespace Miro.Client.ViewModels
     {
         private readonly INavigationService _navigationService;
         private readonly IAuthenticationService _authenticationService;
+
         private string _password;
         private string _email;
         private string _userName;
@@ -50,6 +51,7 @@ namespace Miro.Client.ViewModels
         }
 
         public ICommand RegisterCommand { get; }
+        public ICommand CommandToNavigateToLoginPage { get; set; }
 
         public RegisterViewModel(INavigationService navigationService, IAuthenticationService authenticationService)
         {
@@ -57,13 +59,24 @@ namespace Miro.Client.ViewModels
             _authenticationService = authenticationService;
 
             RegisterCommand = new CommandService(CanExecute_Register, Execute_Register);
+            CommandToNavigateToLoginPage = new CommandService(CanExecute_CommandToNavigateLoginPage, Execute_CommandNavigateToLoginPage);
         }
 
+
+        private bool CanExecute_CommandToNavigateLoginPage(object parameter)
+        {
+            return true;
+        }
         private bool CanExecute_Register(object parameter)
         {
             return true;
         }
 
+        private async void Execute_CommandNavigateToLoginPage(object parameter)
+        {
+            if (CanExecute_CommandToNavigateLoginPage(parameter))
+                _navigationService.NavigateTo(typeof(LoginView));
+        }
         private async void Execute_Register(object parameter)
         {
             if (CanExecute_Register(parameter))

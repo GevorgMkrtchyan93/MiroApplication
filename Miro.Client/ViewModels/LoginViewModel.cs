@@ -44,16 +44,29 @@ namespace Miro.Client.ViewModels
         }
 
         public ICommand LoginCommand { get; set; }
+        public ICommand CommandToNavigateToRegisterPage { get; set; }
 
         public LoginViewModel(INavigationService navigationService, IAuthenticationService authenticationService)
         {
             _navigationService = navigationService;
             _authenticationService = authenticationService;
             LoginCommand = new CommandService(CanExecute_Login, Execute_Login);
+            CommandToNavigateToRegisterPage = new CommandService(CanExecute_NavigateToRegisterPage, Execute_NavigateToRegisterPage);
         }
+        public bool CanExecute_NavigateToRegisterPage(object parameter)
+        {
+            return true;
+        }
+
+        public async void Execute_NavigateToRegisterPage(object parameter)
+        {
+            if (CanExecute_NavigateToRegisterPage(parameter))
+              _navigationService.NavigateTo(typeof(RegisterView));
+        }
+
         public bool CanExecute_Login(object parameter)
         {
-            return !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password) && !string.IsNullOrEmpty(Email);
+            return true;
         }
         public async void Execute_Login(object parameter)
         {

@@ -1,4 +1,5 @@
 ﻿using Miro.Client.Models;
+using Miro.Client.ViewModels;
 
 using System;
 using System.Collections.Generic;
@@ -22,14 +23,17 @@ namespace Miro.Client.Views
     /// </summary>
     public partial class LoginView : Page
     {
-        public LoginView()
+        LoginViewModel ViewModel { get; set; }
+        public LoginView(LoginViewModel viewModel)
         {
             InitializeComponent();
+            ViewModel = viewModel;
+            DataContext = ViewModel;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ApplicationContext.Instance.Username = usernameTextBox.Text;
+            //ApplicationContext.Instance.Username = usernameTextBox.Text;
             //MainWindow.Instance.Navigate<MainView>();
         }
     }

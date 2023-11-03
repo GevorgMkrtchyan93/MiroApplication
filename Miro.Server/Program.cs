@@ -20,6 +20,9 @@ namespace Miro.Server
             builder.Services.AddControllers();
             builder.Services.AddScoped<IAccountManager, AccountManager>();
             builder.Services.AddScoped<IRepository<User>,UserRepository<User>>();
+            builder.Services.AddScoped<IResultModel<User>, ResultModel<User>>();
+            builder.Services.AddScoped<User>();
+            builder.Services.AddScoped<DbContext>();
             builder.Services.AddSignalR();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

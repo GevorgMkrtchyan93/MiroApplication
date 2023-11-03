@@ -1,10 +1,13 @@
-﻿namespace Miro.Server.Interfaces
+﻿using System.Linq.Expressions;
+
+namespace Miro.Server.Interfaces
 {
     public interface IRepository<TModel> where TModel : class
     {
         Task<TModel> GetByIdAsync(int id);
 
         Task<IEnumerable<TModel>> GetAllAsync();
+        Task<TModel> GetAsync(Expression<Func<TModel, bool>> filter);
 
         Task AddAsync(TModel model);
 
