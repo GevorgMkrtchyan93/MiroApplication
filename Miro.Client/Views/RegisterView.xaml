@@ -16,23 +16,29 @@
             <TextBox x:Name="EmailNameTextBox" Width="200" Height="30" Text="{Binding Email, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
 
             <TextBlock Text="Username:" Margin="0,0,0,5"/>
-            <TextBox x:Name="UsernameTextBox" Width="200" Height="30" Text="{Binding UserName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,20"/>
+            <TextBox x:Name="UsernameTextBox" Width="200" Height="30" Text="{Binding UserName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
 
             <TextBlock Text="Password:" Margin="0,0,0,5"/>
             <PasswordBox
-    x:Name="PasswordTextBox"
-    Width="200"
-    Height="30"
-    local:PasswordBoxHelper.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-    Margin="0,0,0,30"/>
+                     x:Name="PasswordTextBox"
+                     Width="200"
+                     Height="30"
+                     local:PasswordBoxHelper.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0,0,0,10"/>
+            <TextBlock Text="Confirm Password:" Margin="0,0,0,5"/>
+            <PasswordBox
+                     x:Name="ConfirmPasswordTextBox"
+                     Width="200"
+                     Height="30"
+                     local:PasswordBoxHelper.BoundPassword="{Binding ConfirmPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0,0,0,10"/>
 
+            <Button x:Name="RegisterButton" Content="Register" Width="100" Height="30" Command="{Binding RegisterCommand,UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Margin="0, 2,0,10">
                         If you have an account, <Hyperlink Command="{Binding CommandToNavigateToLoginPage}">
                             <Run Text="click here" />
                                                 </Hyperlink>.
             </TextBlock>
-
-            <Button x:Name="RegisterButton" Content="Register" Width="100" Height="30" Command="{Binding RegisterCommand,UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
     </Grid>
 </Page>

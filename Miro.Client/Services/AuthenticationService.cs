@@ -1,6 +1,12 @@
-﻿using Miro.Client.Helpers;
+﻿using Microsoft.AspNet.SignalR.Messaging;
+
+using Miro.Client.Consts;
+using Miro.Client.Helpers;
 using Miro.Client.Interfaces;
+using Miro.Server.Entities;
+using Miro.Server.Services;
 using Miro.Shared.AuthenticationModels;
+using Miro.Shared.Validation;
 
 using System;
 using System.Collections.Generic;
@@ -9,71 +15,62 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Miro.Client.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private readonly HttpClient _httpClient;
-        private readonly string baseApiUrl = "https://localhost:7108/";
+        private readonly ApiClient _apiClient;
+       
 
-        public AuthenticationService()
+        public AuthenticationService(ApiClient apiClient)
         {
-            _httpClient = new HttpClient();
+            _apiClient = apiClient;
         }
 
-        public async Task<bool> LoginAsync(LoginModel loginModel)
+        public async Task<bool> Login(LoginModel loginModel)
         {
             try
             {
-                byte[] salt;
-                string hashPassword = HashingPassword.HashPasword(loginModel.Password, out salt);
-                loginModel.Password = hashPassword;
+                Validate.For<string>(loginModel.Email).NotEmpty().Regex(ValidationConstants.EmailPattern);
+                Validate.For<string>(loginModel.Password).NotNull().NotEmpty().MinValue(ValidationConstants.MinPasswordLength).MaxValue(ValidationConstants.MaxPasswordLength).Regex(ValidationConstants.PasswordPattern);
 
-                string jsonContent = JsonSerializer.Serialize(loginModel);
+                var response = await _apiClient.LoginAsync(loginModel).ConfigureAwait(false);
 
-                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                if (response.IsSuccess)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message.ToString());}
+            return false;
+        }
 
-                var response = await _httpClient.PostAsync($"{baseApiUrl}login", content).ConfigureAwait(false);
+        public async Task<bool> Register(RegisterModel registerModel)
+        {
+            try
+            {
+                Validate.For<string>(registerModel.UserName).NotEmpty().MinLength(ValidationConstants.MinUsernameLength).MaxLength(ValidationConstants.MaxUsernameLength);
+                Validate.For<string>(registerModel.Email).NotNull().NotEmpty().Regex(ValidationConstants.EmailPattern);
+                Validate.For<string>(registerModel.Password).NotNull().NotEmpty().MinLength(ValidationConstants.MinPasswordLength).MaxLength(ValidationConstants.MaxPasswordLength).Regex(ValidationConstants.PasswordPattern);
+                Validate.For<string>(registerModel.ConfirmPassword).NotNull().NotEmpty().MinLength(ValidationConstants.MinPasswordLength).MaxLength(ValidationConstants.MaxPasswordLength).Regex(ValidationConstants.PasswordPattern);
 
-                if (response.IsSuccessStatusCode)
+                var response = await _apiClient.RegisterAsync(registerModel).ConfigureAwait(false);
+
+                if (response.IsSuccess)
                 {
                     return true;
                 }
 
-                return false;
             }
             catch (Exception ex)
             {
-                return false;
+
             }
+            return false;
         }
-
-        public async Task<bool> RegisterAsync(RegisterModel registerModel)
-        {
-            try
-            {
-                byte[] salt;
-                string hashPassword = HashingPassword.HashPasword(registerModel.Password,out salt);
-                registerModel.Password = hashPassword;
-                string jsonContent = JsonSerializer.Serialize(registerModel);
-
-                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-                var response = await _httpClient.PostAsync($"{baseApiUrl}register", content).ConfigureAwait(false);
-                var r = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-
-                return false;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
+        
     }
 }

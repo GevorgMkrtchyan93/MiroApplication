@@ -1,6 +1,8 @@
 ﻿using Miro.Client.Interfaces;
 using Miro.Client.Services;
 using Miro.Client.Views;
+using Miro.Server.Entities;
+using Miro.Server.Services;
 using Miro.Shared.AuthenticationModels;
 
 using System;
@@ -79,7 +81,7 @@ namespace Miro.Client.ViewModels
                         Email = Email,
                         Password = Password,
                     };
-                    bool result = await _authenticationService.LoginAsync(loginModel);
+                    bool result = await _authenticationService.Login(loginModel);
                     if (result)
                         _navigationService.NavigateTo(typeof(MainView));
                     else

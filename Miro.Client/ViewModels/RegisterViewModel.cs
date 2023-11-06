@@ -1,6 +1,8 @@
 ﻿using Miro.Client.Interfaces;
 using Miro.Client.Services;
 using Miro.Client.Views;
+using Miro.Server.Entities;
+using Miro.Server.Services;
 using Miro.Shared.AuthenticationModels;
 using Miro.Shared.Validation;
 
@@ -19,6 +21,7 @@ namespace Miro.Client.ViewModels
         private string _password;
         private string _email;
         private string _userName;
+        private string _confirmPassword;
 
         public string Email
         {
@@ -40,6 +43,15 @@ namespace Miro.Client.ViewModels
             }
         }
 
+        public string ConfirmPassword
+        {
+            get { return _confirmPassword; }
+            set
+            {
+                _confirmPassword = value;
+                OnPropertyChanged(nameof(ConfirmPassword));
+            }
+        }
         public string UserName
         {
             get { return _userName; }
@@ -60,6 +72,11 @@ namespace Miro.Client.ViewModels
 
             RegisterCommand = new CommandService(CanExecute_Register, Execute_Register);
             CommandToNavigateToLoginPage = new CommandService(CanExecute_CommandToNavigateLoginPage, Execute_CommandNavigateToLoginPage);
+
+            Email = "haruthunanyan10@gmail.com";
+            UserName = "Harutyun";
+            Password = "Harut0777218858*";
+            ConfirmPassword = "Harut077218858*";
         }
 
 
@@ -87,12 +104,11 @@ namespace Miro.Client.ViewModels
                     {
                         Email = Email,
                         UserName = UserName,
-                        Password = Password
+                        Password = Password,
+                        ConfirmPassword = ConfirmPassword
                     };
 
-                    //_validationService.Validate(registerViewModel);
-
-                    bool result = await _authenticationService.RegisterAsync(registerViewModel);
+                    bool result = await _authenticationService.Register(registerViewModel);
                     if (result)
                         _navigationService.NavigateTo(typeof(MainView));
                     else

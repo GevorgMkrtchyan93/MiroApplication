@@ -29,10 +29,11 @@ namespace Miro.Client
         {
             services.AddSingleton<ScopeManager>();
             services.AddScoped<INavigationService, NavigationService>();
+            services.AddScoped<IApiClient, ApiClient>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped(serviceProvider => new ApiClient(""));
+            services.AddScoped<IApiClient>(serviceProvider => new ApiClient("value here"));
             services.AddScoped<System.Windows.Input.ICommand, CommandService>();
-            //services.AddScoped<IValidation<RegisterModel>, UserValidation>();
-            //services.AddScoped<ICommandService, CommandService>();
             services.AddScoped<MainView>();
             services.AddScoped<MainWindow>();
             services.AddScoped<MainWindowViewModel>();

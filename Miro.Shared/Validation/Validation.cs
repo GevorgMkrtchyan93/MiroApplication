@@ -67,6 +67,26 @@ namespace Miro.Shared.Validation
             return this;
         }
 
+        public ValidationObject<T> MaxValue(decimal maxValue,string? message = null)
+        {
+            if (Convert.ToInt64(_entity) >= maxValue) throw new Exception(message + " " + Convert.ToString(maxValue));
+
+            return this;
+        }
+
+        public ValidationObject<T> MinLength(decimal minValue, string? message = null)
+        {
+            if (Convert.ToString(_entity).Length < minValue) throw new Exception();
+
+            return this;
+        }
+
+        public ValidationObject<T> MaxLength(decimal maxValue, string? message = null)
+        {
+            if (Convert.ToString(_entity).Length > maxValue) throw new Exception();
+
+            return this;
+        }
         public ValidationObject<T> Regex(string regexString, string? message = null)
         {
             Regex regex = new Regex(regexString);

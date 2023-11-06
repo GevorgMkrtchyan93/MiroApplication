@@ -1,4 +1,5 @@
 ﻿using Miro.Client.Models;
+using Miro.Client.ViewModels;
 
 using System.Windows;
 using System.Windows.Controls;
@@ -10,9 +11,12 @@ namespace Miro.Client.Views
     /// </summary>
     public partial class MainView : Page
     {
-        public MainView()
+        public MainWindowViewModel ViewModel { get; set; }
+        public MainView(MainWindowViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = ViewModel;
+            ViewModel = viewModel;
         }
     }
 }

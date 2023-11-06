@@ -59,7 +59,7 @@ namespace Miro.Server.Services
             return resultModel;
         }
 
-        public async Task<bool> RegisterAsync(RegisterModel registerModel)
+        public async Task<ResultModel<User>> RegisterAsync(RegisterModel registerModel)
         {
             var user = _mapperRegister.Map(registerModel);
             Validate
@@ -71,7 +71,7 @@ namespace Miro.Server.Services
                 .NotNull()
                 .NotEmpty();
             await _userRepository.AddAsync(user).ConfigureAwait(false);
-            return true;
+            return new ResultModel<User>(user);
         }
     }
 }

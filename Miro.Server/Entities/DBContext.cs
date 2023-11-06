@@ -20,7 +20,7 @@ namespace Miro.Server.Entities
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-QPTUFI0\\SQLEXPRESS;Database=MiroApp;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-I6JDFV5;Database=MiroApp;Trusted_Connection=True;TrustServerCertificate=True;");
 
             base.OnConfiguring(optionsBuilder);
         }
