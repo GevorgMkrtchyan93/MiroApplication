@@ -1,4 +1,5 @@
-﻿using Miro.Client.Interfaces;
+﻿using Miro.Client.Helpers;
+using Miro.Client.Interfaces;
 using Miro.Shared.AuthenticationModels;
 
 using System;
@@ -25,6 +26,10 @@ namespace Miro.Client.Services
         {
             try
             {
+                byte[] salt;
+                string hashPassword = HashingPassword.HashPasword(loginModel.Password, out salt);
+                loginModel.Password = hashPassword;
+
                 string jsonContent = JsonSerializer.Serialize(loginModel);
 
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -48,6 +53,9 @@ namespace Miro.Client.Services
         {
             try
             {
+                byte[] salt;
+                string hashPassword = HashingPassword.HashPasword(registerModel.Password,out salt);
+                registerModel.Password = hashPassword;
                 string jsonContent = JsonSerializer.Serialize(registerModel);
 
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");

@@ -13,7 +13,7 @@
             <Button Content="Join" Padding="10 0" Click="JoinBoardClick"/>
         </StackPanel>-->
         <StackPanel>
-            <Button Content="New Board"/>
+            <Button Content="Welcome to your Board"/>
         </StackPanel>
     </Grid>
 </Page>
