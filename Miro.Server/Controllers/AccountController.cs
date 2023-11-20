@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+using Miro.Server.Entities;
 using Miro.Server.Interfaces;
+using Miro.Server.Services;
 using Miro.Shared.AuthenticationModels;
 
 namespace Miro.Server.Controllers
@@ -14,12 +16,12 @@ namespace Miro.Server.Controllers
             _accountManager = accountManager;
         }
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel registerModel)
+        public async Task<ActionResult<ResultModel<User>>> Register([FromBody] RegisterModel registerModel)
         {
             return Ok(await _accountManager.RegisterAsync(registerModel).ConfigureAwait(false));
         }
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
+        public async Task<ActionResult<ResultModel<User>>> Login([FromBody] LoginModel loginModel)
         {
             return Ok(await _accountManager.LoginAsync(loginModel).ConfigureAwait(false));
         }

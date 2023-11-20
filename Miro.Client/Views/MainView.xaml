@@ -6,15 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <!--<StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10">
-            <Button Content="New Board" Padding="10 0" Click="NewBoardButtonClick" Margin="10 0"/>
-            <TextBlock Text="Enter board id: " VerticalAlignment="Center"/>
-            <TextBox x:Name="boardIdTextBox" Width="150"  Margin="10 0" VerticalAlignment="Center"/>
-            <Button Content="Join" Padding="10 0" Click="JoinBoardClick"/>
-        </StackPanel>-->
-        <StackPanel>
-            <Button Content="Logout" Command="{Binding Logout, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Content="Welcome to your Board"/>
-        </StackPanel>
+       
+        
     </Grid>
 </Page>

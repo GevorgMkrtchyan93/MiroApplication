@@ -6,15 +6,8 @@ using Miro.Server.Services;
 using Miro.Shared.AuthenticationModels;
 
 using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Navigation;
 
 namespace Miro.Client.ViewModels
 {
@@ -46,6 +39,7 @@ namespace Miro.Client.ViewModels
         }
 
         public ICommand LoginCommand { get; set; }
+
         public ICommand CommandToNavigateToRegisterPage { get; set; }
 
         public LoginViewModel(INavigationService navigationService, IAuthenticationService authenticationService)
@@ -70,6 +64,7 @@ namespace Miro.Client.ViewModels
         {
             return true;
         }
+
         public async void Execute_Login(object parameter)
         {
             if (CanExecute_Login(parameter))
@@ -81,9 +76,11 @@ namespace Miro.Client.ViewModels
                         Email = Email,
                         Password = Password,
                     };
-                    bool result = await _authenticationService.Login(loginModel);
-                    if (result)
-                        _navigationService.NavigateTo(typeof(MainView));
+                    ResultModel<User> resultInfo = await _authenticationService.Login(loginModel);
+                    if (resultInfo != null)
+                    {
+                        _navigationService.NavigateTo(typeof(AccountView),resultInfo);
+                    }
                     else
                         MessageBox.Show("Invalid Email or Password");
                 }

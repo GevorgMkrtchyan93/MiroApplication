@@ -41,6 +41,8 @@ namespace Miro.Client
             services.AddScoped<RegisterViewModel>();
             services.AddScoped<LoginView>();
             services.AddScoped<LoginViewModel>();
+            services.AddScoped<AccountView>();
+            services.AddScoped<AccountViewModel>();
             services.AddScoped<BoardView>();
 
         }

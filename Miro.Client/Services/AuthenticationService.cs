@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNet.SignalR.Messaging;
-
-using Miro.Client.Consts;
-using Miro.Client.Helpers;
+﻿using Miro.Client.Consts;
 using Miro.Client.Interfaces;
 using Miro.Server.Entities;
 using Miro.Server.Services;
@@ -9,14 +6,8 @@ using Miro.Shared.AuthenticationModels;
 using Miro.Shared.Validation;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Miro.Client.Services
 {
@@ -30,7 +21,7 @@ namespace Miro.Client.Services
             _apiClient = apiClient;
         }
 
-        public async Task<bool> Login(LoginModel loginModel)
+        public async Task<ResultModel<User>> Login(LoginModel loginModel)
         {
             try
             {
@@ -41,14 +32,14 @@ namespace Miro.Client.Services
 
                 if (response.IsSuccess)
                 {
-                    return true;
+                    return new ResultModel<User>(response.Data);
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message.ToString());}
-            return false;
+            return null;
         }
 
-        public async Task<bool> Register(RegisterModel registerModel)
+        public async Task<ResultModel<User>> Register(RegisterModel registerModel)
         {
             try
             {
@@ -61,15 +52,15 @@ namespace Miro.Client.Services
 
                 if (response.IsSuccess)
                 {
-                    return true;
+                    return new ResultModel<User>(response.Data);
                 }
 
             }
             catch (Exception ex)
             {
-
+                
             }
-            return false;
+            return null;
         }
         
     }
