@@ -94,5 +94,37 @@ namespace Miro.Client.Services
                 return new ResultModel<User>(null);
             }
         }
+
+        public async Task<bool> LogoutAsync(int userId)
+        {
+            try
+            {
+                string jsonContent = System.Text.Json.JsonSerializer.Serialize(userId);
+
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                var request = new HttpRequestMessage(HttpMethod.Post, $"{baseApiUrl}logout")
+                {
+                    Content = content
+                };
+
+                var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
+                var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var userInfo = JsonConvert.DeserializeObject<ResultModel<User>>(result);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
+            return false;
+        }
     }
 }

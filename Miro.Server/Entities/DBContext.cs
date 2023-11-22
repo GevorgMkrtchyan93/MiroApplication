@@ -8,7 +8,6 @@ namespace Miro.Server.Entities
     {
         public DBContext()
         {
-
         }
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         { }

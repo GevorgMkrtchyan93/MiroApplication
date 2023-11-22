@@ -63,5 +63,18 @@ namespace Miro.Client.Services
             return null;
         }
         
+        public async Task<bool> Logout(int userId)
+        {
+            try
+            {
+                var response = await _apiClient.LogoutAsync(userId).ConfigureAwait(false);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+                return false;
+            }
+        }
     }
 }

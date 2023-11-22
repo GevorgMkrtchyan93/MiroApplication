@@ -1,12 +1,9 @@
 ﻿using Miro.Client.Interfaces;
 using Miro.Client.Services;
 using Miro.Client.Views;
+using Miro.Server.Entities;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -15,10 +12,22 @@ namespace Miro.Client.ViewModels
     public class AccountViewModel:NotifyPropertyChange
     {
         private readonly INavigationService _navigationService;
+        private readonly IAuthenticationService _authenticationService;
+        private IUserDataService _userDataService;
 
+        private int _userId;
 
-        private string _userName;
-        public string UserName
+        public int UserId
+        {
+            get => _userId;
+            set
+            {
+                _userId = value;
+                OnPropertyChanged(nameof(UserId));
+            }
+        }
+        private string? _userName;
+        public string? UserName
         {
             get => _userName;
             set
@@ -28,10 +37,25 @@ namespace Miro.Client.ViewModels
             }
         }
 
-        public AccountViewModel(INavigationService navigationService)
+        private string? _email;
+
+        public string? Email
         {
+            get => _email;
+            set
+            {
+                _email = value;
+                OnPropertyChanged(nameof(Email));
+            }
+        }
+
+        public AccountViewModel(INavigationService navigationService,IAuthenticationService authenticationService, IUserDataService userDataService)
+        {
+            _userDataService = userDataService;
+            _authenticationService = authenticationService;
             _navigationService = navigationService;
-            Logout = new CommandService(CanExecute_Logout,Execute_Logout);
+            Logout = new CommandService(CanExecute_Logout, Execute_Logout);
+            _userDataService = userDataService;
         }
 
         public ICommand Logout { get; set; }
@@ -41,11 +65,13 @@ namespace Miro.Client.ViewModels
             return true;
         }
 
-        private async  void Execute_Logout(object parameter)
+        private async void Execute_Logout(object parameter)
         {
             try 
-            { 
-
+            {
+                var result = await _authenticationService.Logout(_userDataService.ResultInfo.Data.Id).ConfigureAwait(false);
+                if (result) 
+                    _navigationService.NavigateTo(typeof(LoginView));
             }
             catch(Exception ex) 
             {

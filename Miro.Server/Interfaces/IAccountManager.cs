@@ -7,6 +7,9 @@ namespace Miro.Server.Interfaces
     public interface IAccountManager
     {
         Task<ResultModel<User>> RegisterAsync(RegisterModel registerModel);
+
         Task<ResultModel<User>> LoginAsync(LoginModel loginModel);
+
+        Task<bool> LogoutAsync(int userId);
     }
 }

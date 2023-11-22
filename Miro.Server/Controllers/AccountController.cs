@@ -25,5 +25,11 @@ namespace Miro.Server.Controllers
         {
             return Ok(await _accountManager.LoginAsync(loginModel).ConfigureAwait(false));
         }
+
+        [HttpPost("logout")]
+        public async Task<ActionResult<bool>> Logout([FromBody]int userId)
+        {
+            return Ok(await _accountManager.LogoutAsync(userId).ConfigureAwait(false));
+        }
     }
 }

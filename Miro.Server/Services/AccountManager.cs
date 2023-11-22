@@ -1,4 +1,6 @@
-﻿using Miro.Server.Entities;
+﻿using Microsoft.AspNet.SignalR.Messaging;
+
+using Miro.Server.Entities;
 using Miro.Server.Interfaces;
 using Miro.Shared.AuthenticationModels;
 using Miro.Shared.Map;
@@ -59,6 +61,24 @@ namespace Miro.Server.Services
             return resultModel;
         }
 
+        public async Task<bool> LogoutAsync(int userId)
+        {
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(userId).ConfigureAwait(false);
+                if (user.IsLoggedIn == true)
+                {
+                    user.IsLoggedIn = false;
+                    return true;
+                }
+                else return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public async Task<ResultModel<User>> RegisterAsync(RegisterModel registerModel)
         {
             var user = _mapperRegister.Map(registerModel);
@@ -73,5 +93,6 @@ namespace Miro.Server.Services
             await _userRepository.AddAsync(user).ConfigureAwait(false);
             return new ResultModel<User>(user);
         }
+
     }
 }

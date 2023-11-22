@@ -15,6 +15,7 @@ namespace Miro.Client.ViewModels
     {
         private readonly INavigationService _navigationService;
         private readonly IAuthenticationService _authenticationService;
+        private IUserDataService _userDataService;
         
         private string _password;
         private string _email;
@@ -42,8 +43,9 @@ namespace Miro.Client.ViewModels
 
         public ICommand CommandToNavigateToRegisterPage { get; set; }
 
-        public LoginViewModel(INavigationService navigationService, IAuthenticationService authenticationService)
+        public LoginViewModel(INavigationService navigationService, IAuthenticationService authenticationService,IUserDataService userDataService)
         {
+            _userDataService = userDataService;
             _navigationService = navigationService;
             _authenticationService = authenticationService;
             LoginCommand = new CommandService(CanExecute_Login, Execute_Login);
@@ -76,10 +78,10 @@ namespace Miro.Client.ViewModels
                         Email = Email,
                         Password = Password,
                     };
-                    ResultModel<User> resultInfo = await _authenticationService.Login(loginModel);
-                    if (resultInfo != null)
+                    _userDataService.ResultInfo = await _authenticationService.Login(loginModel);
+                    if (_userDataService.ResultInfo!=null)
                     {
-                        _navigationService.NavigateTo(typeof(AccountView),resultInfo);
+                        _navigationService.NavigateTo(typeof(AccountView));
                     }
                     else
                         MessageBox.Show("Invalid Email or Password");

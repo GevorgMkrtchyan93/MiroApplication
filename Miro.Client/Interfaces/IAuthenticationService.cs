@@ -8,6 +8,9 @@ namespace Miro.Client.Interfaces
     public interface IAuthenticationService
     {
         Task<ResultModel<User>> Login(LoginModel loginModel);
+
         Task<ResultModel<User>> Register(RegisterModel registerModel);
+
+        Task<bool> Logout(int userId);
     }
 }

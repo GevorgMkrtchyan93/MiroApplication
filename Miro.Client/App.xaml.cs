@@ -31,6 +31,7 @@ namespace Miro.Client
             services.AddScoped<INavigationService, NavigationService>();
             services.AddScoped<IApiClient, ApiClient>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IUserDataService, UserDataService>();
             services.AddScoped(serviceProvider => new ApiClient(""));
             services.AddScoped<IApiClient>(serviceProvider => new ApiClient("value here"));
             services.AddScoped<System.Windows.Input.ICommand, CommandService>();
