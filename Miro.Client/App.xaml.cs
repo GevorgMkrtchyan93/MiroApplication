@@ -4,8 +4,6 @@ using Miro.Client.Interfaces;
 using Miro.Client.Services;
 using Miro.Client.ViewModels;
 using Miro.Client.Views;
-using Miro.Shared.AuthenticationModels;
-using Miro.Shared.Validation;
 
 using System.Windows;
 
@@ -32,6 +30,7 @@ namespace Miro.Client
             services.AddScoped<IApiClient, ApiClient>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserDataService, UserDataService>();
+            services.AddScoped<IHashingPassword,HashingPassword>();
             services.AddScoped(serviceProvider => new ApiClient(""));
             services.AddScoped<IApiClient>(serviceProvider => new ApiClient("value here"));
             services.AddScoped<System.Windows.Input.ICommand, CommandService>();

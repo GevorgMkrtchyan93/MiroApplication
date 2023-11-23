@@ -4,12 +4,13 @@ using Miro.Client.Views;
 using Miro.Server.Entities;
 
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 namespace Miro.Client.ViewModels
 {
-    public class AccountViewModel:NotifyPropertyChange
+    public class AccountViewModel : NotifyPropertyChange
     {
         private readonly INavigationService _navigationService;
         private readonly IAuthenticationService _authenticationService;
@@ -22,7 +23,7 @@ namespace Miro.Client.ViewModels
             get => _userId;
             set
             {
-                _userId = value;
+                _userId = _userDataService.ResultInfo.Data.Id;
                 OnPropertyChanged(nameof(UserId));
             }
         }
@@ -32,7 +33,7 @@ namespace Miro.Client.ViewModels
             get => _userName;
             set
             {
-                _userName = value;
+                _userName = _userDataService.ResultInfo.Data.UserName;
                 OnPropertyChanged(nameof(UserName));
             }
         }
@@ -41,7 +42,7 @@ namespace Miro.Client.ViewModels
 
         public string? Email
         {
-            get => _email;
+            get => _userDataService.ResultInfo.Data.Email;
             set
             {
                 _email = value;
@@ -49,7 +50,7 @@ namespace Miro.Client.ViewModels
             }
         }
 
-        public AccountViewModel(INavigationService navigationService,IAuthenticationService authenticationService, IUserDataService userDataService)
+        public AccountViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IUserDataService userDataService)
         {
             _userDataService = userDataService;
             _authenticationService = authenticationService;
@@ -62,22 +63,37 @@ namespace Miro.Client.ViewModels
 
         private bool CanExecute_Logout(object parameter)
         {
-            return true;
+            if (_userDataService.ResultInfo.Data.Id != null)
+                return true;
+            return false;
         }
 
         private async void Execute_Logout(object parameter)
         {
-            try 
+            if (CanExecute_Logout(parameter))
             {
-                var result = await _authenticationService.Logout(_userDataService.ResultInfo.Data.Id).ConfigureAwait(false);
-                if (result) 
-                    _navigationService.NavigateTo(typeof(LoginView));
+                try
+                {
+                    var result = await _authenticationService.Logout(_userDataService.ResultInfo.Data.Id).ConfigureAwait(false);
+
+                    // Ensure UI updates are done on the UI thread
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        if (result)
+                            _navigationService.NavigateTo(typeof(LoginView));
+                        else
+                            _navigationService.NavigateTo(typeof(RegisterView));
+                    });
+                }
+                catch (Exception ex)
+                {
+                    // Ensure UI updates are done on the UI thread
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        MessageBox.Show(ex.Message.ToString());
+                    });
+                }
             }
-            catch(Exception ex) 
-            {
-                MessageBox.Show(ex.Message.ToString());
-            }
-            _navigationService.NavigateTo(typeof(RegisterView));
         }
 
     }

@@ -9,8 +9,8 @@
 
     <Grid>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10">
+            <TextBlock Text="{Binding Email,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
             <Button Content="Logout" Command="{Binding Logout, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock Text="{Binding UserName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
         </StackPanel>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10">
             <Button Content="New Board"  Command="{Binding CreatNewBoard,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>

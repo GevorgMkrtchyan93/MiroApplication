@@ -1,7 +1,8 @@
 ﻿using Miro.Server.Entities;
 using Miro.Server.Interfaces;
 
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
+
 using System.Linq.Expressions;
 
 namespace Miro.Server.Services
@@ -15,7 +16,7 @@ namespace Miro.Server.Services
             _dBContext = dBContext;
         }
 
-        public async Task AddAsync(TEntity entity)
+        public async Task AddAsync (TEntity entity)
         {
             await _dBContext.Set<TEntity>().AddAsync(entity).ConfigureAwait(false);
             await _dBContext.SaveChangesAsync().ConfigureAwait(false);

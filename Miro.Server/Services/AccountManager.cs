@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNet.SignalR.Messaging;
-
-using Miro.Server.Entities;
+﻿using Miro.Server.Entities;
 using Miro.Server.Interfaces;
 using Miro.Shared.AuthenticationModels;
 using Miro.Shared.Map;
@@ -34,11 +32,11 @@ namespace Miro.Server.Services
                     .For(user.Email)
                     .NotNull();
 
-                var results = await _userRepository.GetAsync(u => u.Email == loginModel.Email && u.Password == loginModel.Password).ConfigureAwait(false);
+                var storedUser = await _userRepository.GetAsync(u => u.Email == loginModel.Email && u.Password == loginModel.Password).ConfigureAwait(false);
 
-                if (results != null)
+                if (storedUser != null)
                 {
-                    resultModel = new ResultModel<User>(results);
+                    resultModel = new ResultModel<User>(storedUser);
                 }
                 else
                 {
@@ -61,14 +59,46 @@ namespace Miro.Server.Services
             return resultModel;
         }
 
+        public async Task<ResultModel<User>> RegisterAsync(RegisterModel registerModel)
+        {
+            try
+            {
+
+                var user = _mapperRegister.Map(registerModel);
+                Validate
+                    .For(user)
+                    .NotNull();
+
+                Validate
+                    .For(user.UserName)
+                    .NotNull()
+                    .NotEmpty();
+
+                var existingUser = await _userRepository.GetAsync(u => u.Email == registerModel.Email && u.UserName == registerModel.UserName).ConfigureAwait(false);
+
+                if (existingUser == null)
+                {
+                    user.SessionToken = Guid.NewGuid().ToString();
+                    await _userRepository.AddAsync(user).ConfigureAwait(false);
+                }
+
+                return new ResultModel<User>(user);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<bool> LogoutAsync(int userId)
         {
             try
             {
                 var user = await _userRepository.GetByIdAsync(userId).ConfigureAwait(false);
-                if (user.IsLoggedIn == true)
+                if (user!=null)
                 {
-                    user.IsLoggedIn = false;
+                    user.SessionToken = null;
+                    await _userRepository.UpdateAsync(user);
                     return true;
                 }
                 else return false;
@@ -78,21 +108,5 @@ namespace Miro.Server.Services
                 return false;
             }
         }
-
-        public async Task<ResultModel<User>> RegisterAsync(RegisterModel registerModel)
-        {
-            var user = _mapperRegister.Map(registerModel);
-            Validate
-                .For(user)
-                .NotNull();
-
-            Validate
-                .For(user.UserName)
-                .NotNull()
-                .NotEmpty();
-            await _userRepository.AddAsync(user).ConfigureAwait(false);
-            return new ResultModel<User>(user);
-        }
-
     }
 }

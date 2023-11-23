@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Threading.Tasks;
 
 namespace Miro.Client.Models

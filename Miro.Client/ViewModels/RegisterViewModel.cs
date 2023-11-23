@@ -16,6 +16,7 @@ namespace Miro.Client.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IAuthenticationService _authenticationService;
         private IUserDataService _userDataService;
+        private readonly IHashingPassword _hashingPassword;
 
         private string _password;
         private string _email;
@@ -64,11 +65,12 @@ namespace Miro.Client.ViewModels
         public ICommand RegisterCommand { get; }
         public ICommand CommandToNavigateToLoginPage { get; set; }
 
-        public RegisterViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IUserDataService userDataService)
+        public RegisterViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IUserDataService userDataService, IHashingPassword hashingPassword)
         {
             _userDataService = userDataService;
             _navigationService = navigationService;
             _authenticationService = authenticationService;
+            _hashingPassword = hashingPassword;
 
             RegisterCommand = new CommandService(CanExecute_Register, Execute_Register);
             CommandToNavigateToLoginPage = new CommandService(CanExecute_CommandToNavigateLoginPage, Execute_CommandNavigateToLoginPage);
@@ -77,6 +79,7 @@ namespace Miro.Client.ViewModels
             UserName = "Harutyun";
             Password = "Harut0777218858*";
             ConfirmPassword = "Harut077218858*";
+            _hashingPassword = hashingPassword;
         }
 
 
@@ -105,14 +108,13 @@ namespace Miro.Client.ViewModels
                     {
                         Email = Email,
                         UserName = UserName,
-                        Password = Password,
+                        Password = _hashingPassword.HashPassword(Password,out var salt),
                         ConfirmPassword = ConfirmPassword
                     };
 
                     _userDataService.ResultInfo = await _authenticationService.Register(registerViewModel);
                     if (_userDataService.ResultInfo != null)
                     {
-                        _userDataService.ResultInfo.Data.IsLoggedIn = true;
                         _navigationService.NavigateTo(typeof(AccountView));
                     }
                     else

@@ -26,7 +26,7 @@ namespace Miro.Client.Services
             try
             {
                 Validate.For<string>(loginModel.Email).NotEmpty().Regex(ValidationConstants.EmailPattern);
-                Validate.For<string>(loginModel.Password).NotNull().NotEmpty().MinValue(ValidationConstants.MinPasswordLength).MaxValue(ValidationConstants.MaxPasswordLength).Regex(ValidationConstants.PasswordPattern);
+                //Validate.For<string>(loginModel.Password).NotNull().NotEmpty().MinLength(ValidationConstants.MinPasswordLength).MaxLength(ValidationConstants.MaxPasswordLength).Regex(ValidationConstants.PasswordPattern);
 
                 var response = await _apiClient.LoginAsync(loginModel).ConfigureAwait(false);
 
@@ -45,8 +45,8 @@ namespace Miro.Client.Services
             {
                 Validate.For<string>(registerModel.UserName).NotEmpty().MinLength(ValidationConstants.MinUsernameLength).MaxLength(ValidationConstants.MaxUsernameLength);
                 Validate.For<string>(registerModel.Email).NotNull().NotEmpty().Regex(ValidationConstants.EmailPattern);
-                Validate.For<string>(registerModel.Password).NotNull().NotEmpty().MinLength(ValidationConstants.MinPasswordLength).MaxLength(ValidationConstants.MaxPasswordLength).Regex(ValidationConstants.PasswordPattern);
-                Validate.For<string>(registerModel.ConfirmPassword).NotNull().NotEmpty().MinLength(ValidationConstants.MinPasswordLength).MaxLength(ValidationConstants.MaxPasswordLength).Regex(ValidationConstants.PasswordPattern);
+                //Validate.For<string>(registerModel.Password).NotNull().NotEmpty().MinLength(ValidationConstants.MinPasswordLength).MaxLength(ValidationConstants.MaxPasswordLength).Regex(ValidationConstants.PasswordPattern);
+                //Validate.For<string>(registerModel.ConfirmPassword).NotNull().NotEmpty().MinLength(ValidationConstants.MinPasswordLength).MaxLength(ValidationConstants.MaxPasswordLength).Regex(ValidationConstants.PasswordPattern);
 
                 var response = await _apiClient.RegisterAsync(registerModel).ConfigureAwait(false);
 

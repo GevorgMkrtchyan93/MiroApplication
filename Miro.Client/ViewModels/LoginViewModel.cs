@@ -16,6 +16,7 @@ namespace Miro.Client.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IAuthenticationService _authenticationService;
         private IUserDataService _userDataService;
+        private readonly IHashingPassword _hashingPassword;
         
         private string _password;
         private string _email;
@@ -43,13 +44,18 @@ namespace Miro.Client.ViewModels
 
         public ICommand CommandToNavigateToRegisterPage { get; set; }
 
-        public LoginViewModel(INavigationService navigationService, IAuthenticationService authenticationService,IUserDataService userDataService)
+        public LoginViewModel(INavigationService navigationService, IAuthenticationService authenticationService,IUserDataService userDataService, IHashingPassword hashingPassword)
         {
             _userDataService = userDataService;
             _navigationService = navigationService;
             _authenticationService = authenticationService;
+            _hashingPassword = hashingPassword;
             LoginCommand = new CommandService(CanExecute_Login, Execute_Login);
             CommandToNavigateToRegisterPage = new CommandService(CanExecute_NavigateToRegisterPage, Execute_NavigateToRegisterPage);
+
+            Email = "haruthunanyan10@gmail.com";
+            Password = "Harut0777218858*";
+            _hashingPassword = hashingPassword;
         }
         public bool CanExecute_NavigateToRegisterPage(object parameter)
         {
@@ -76,7 +82,7 @@ namespace Miro.Client.ViewModels
                     var loginModel = new LoginModel()
                     {
                         Email = Email,
-                        Password = Password,
+                        Password = _hashingPassword.HashPassword(Password,out var salt),
                     };
                     _userDataService.ResultInfo = await _authenticationService.Login(loginModel);
                     if (_userDataService.ResultInfo!=null)

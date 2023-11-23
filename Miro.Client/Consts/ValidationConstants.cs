@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Miro.Client.Consts
+﻿namespace Miro.Client.Consts
 {
     public static class ValidationConstants
     {
@@ -16,7 +10,7 @@ namespace Miro.Client.Consts
         public const int MinUsernameLength = 3;
         public const int MaxUsernameLength = 20;
         public const int MinPasswordLength = 6;
-        public const int MaxPasswordLength = 30;
+        public const int MaxPasswordLength = 1500;
 
         public const string PasswordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,}$";
         public const string EmailPattern = @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$";

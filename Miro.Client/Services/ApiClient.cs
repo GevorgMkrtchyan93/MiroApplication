@@ -27,24 +27,22 @@ namespace Miro.Client.Services
         {
             try
             {
-                byte[] salt;
-                string hashPassword = HashingPassword.HashPasword(loginModel.Password, out salt);
-                loginModel.Password = hashPassword;
-
                 string jsonContent = System.Text.Json.JsonSerializer.Serialize(loginModel);
 
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-                var request = new HttpRequestMessage(HttpMethod.Post, $"{baseApiUrl}register")
+                var request = new HttpRequestMessage(HttpMethod.Post, $"{baseApiUrl}login")
                 {
                     Content = content
                 };
 
                 var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
-                var r = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return System.Text.Json.JsonSerializer.Deserialize<ResultModel<User>>(r);
+                   var userInfo =  JsonConvert.DeserializeObject<ResultModel<User>>(result);
+                   userInfo.IsSuccess = true;
+                   return userInfo;
                 }
                 else
                 {
@@ -62,10 +60,6 @@ namespace Miro.Client.Services
         {
             try
             {
-                byte[] salt;
-                string hashPassword = HashingPassword.HashPasword(loginModel.Password, out salt);
-                loginModel.Password = hashPassword;
-
                 string jsonContent = System.Text.Json.JsonSerializer.Serialize(loginModel);
 
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -83,6 +77,7 @@ namespace Miro.Client.Services
                    userInfo.IsSuccess = true;
                    return userInfo;
                 }
+
                 else
                 {
                     return new ResultModel<User>(null);
@@ -109,7 +104,7 @@ namespace Miro.Client.Services
 
                 var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
                 var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var userInfo = JsonConvert.DeserializeObject<ResultModel<User>>(result);
+                var userInfo = JsonConvert.DeserializeObject<bool>(result);
 
                 if (response.IsSuccessStatusCode)
                 {
