@@ -1,10 +1,8 @@
 ﻿using Miro.Client.Interfaces;
 using Miro.Client.Services;
 using Miro.Client.Views;
-using Miro.Server.Entities;
 
 using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -56,16 +54,36 @@ namespace Miro.Client.ViewModels
             _authenticationService = authenticationService;
             _navigationService = navigationService;
             Logout = new CommandService(CanExecute_Logout, Execute_Logout);
+            JoinBoard = new CommandService(CanExecute_JoinBoard, Execute_JoinBoard);
             _userDataService = userDataService;
         }
 
         public ICommand Logout { get; set; }
+
+        public ICommand JoinBoard { get; set; }
 
         private bool CanExecute_Logout(object parameter)
         {
             if (_userDataService.ResultInfo.Data.Id != null)
                 return true;
             return false;
+        }
+
+        private bool CanExecute_JoinBoard(object parameter)
+        {
+            return true; 
+        }
+
+        private async void Execute_JoinBoard(object parameter)
+        {
+            try
+            {
+                _navigationService.NavigateTo(typeof(BoardView));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private async void Execute_Logout(object parameter)

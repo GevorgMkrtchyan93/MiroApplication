@@ -1,11 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 using Miro.Server.Entities;
 using Miro.Server.Interfaces;
 using Miro.Server.Services;
-
-using System;
 
 namespace Miro.Server
 {

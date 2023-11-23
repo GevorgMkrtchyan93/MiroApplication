@@ -17,11 +17,5 @@ namespace Miro.Client.Views
             ViewModel = viewModel;
             DataContext = ViewModel;
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            //ApplicationContext.Instance.Username = usernameTextBox.Text;
-            //MainWindow.Instance.Navigate<MainView>();
-        }
     }
 }

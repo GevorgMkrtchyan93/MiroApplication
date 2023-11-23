@@ -1,8 +1,6 @@
 ﻿using Miro.Client.Interfaces;
 using Miro.Client.Services;
 using Miro.Client.Views;
-using Miro.Server.Entities;
-using Miro.Server.Services;
 using Miro.Shared.AuthenticationModels;
 
 using System;

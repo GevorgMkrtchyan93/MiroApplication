@@ -31,6 +31,7 @@ namespace Miro.Client
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserDataService, UserDataService>();
             services.AddScoped<IHashingPassword,HashingPassword>();
+            services.AddScoped<IRelayCommand, RelayCommand>();
             services.AddScoped(serviceProvider => new ApiClient(""));
             services.AddScoped<IApiClient>(serviceProvider => new ApiClient("value here"));
             services.AddScoped<System.Windows.Input.ICommand, CommandService>();
@@ -44,6 +45,7 @@ namespace Miro.Client
             services.AddScoped<AccountView>();
             services.AddScoped<AccountViewModel>();
             services.AddScoped<BoardView>();
+            services.AddScoped<BoardViewModel>();
 
         }
         protected override void OnStartup(StartupEventArgs e)
