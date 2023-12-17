@@ -28,6 +28,7 @@ namespace Miro.Server.Services
                 .FirstOrDefaultAsync(filter)
                 .ConfigureAwait(false);
         }
+
         public async Task DeleteAsync(int id)
         {
             var entity = await GetByIdAsync(id).ConfigureAwait(false);

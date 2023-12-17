@@ -6,5 +6,6 @@ namespace Miro.Client.Interfaces
     public interface IUserDataService
     {
         ResultModel<User>? ResultInfo { get; set; }
+
     }
 }

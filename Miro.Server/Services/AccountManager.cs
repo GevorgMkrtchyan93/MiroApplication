@@ -9,13 +9,16 @@ namespace Miro.Server.Services
     public class AccountManager : IAccountManager
     {
         private readonly IRepository<User> _userRepository;
+        private readonly ITokenService<User> _tokenService;
         private readonly GenericMapper<RegisterModel, User> _mapperRegister;
         private readonly GenericMapper<LoginModel, User> _mapperLogin;
-        public AccountManager(IRepository<User> userRepository)
+ 
+        public AccountManager(IRepository<User> userRepository, ITokenService<User> tokenService)
         {
             _userRepository = userRepository;
             _mapperRegister = new GenericMapper<RegisterModel, User>();
             _mapperLogin = new GenericMapper<LoginModel, User>();
+            _tokenService = tokenService;
         }
 
         public async Task<ResultModel<User>> LoginAsync(LoginModel loginModel)
@@ -37,6 +40,8 @@ namespace Miro.Server.Services
                 if (storedUser != null)
                 {
                     resultModel = new ResultModel<User>(storedUser);
+                    resultModel.Data.SessionToken = _tokenService.GenerateToken(user);
+                    await _userRepository.UpdateAsync(resultModel.Data).ConfigureAwait(false);
                 }
                 else
                 {
@@ -78,7 +83,7 @@ namespace Miro.Server.Services
 
                 if (existingUser == null)
                 {
-                    user.SessionToken = Guid.NewGuid().ToString();
+                    user.SessionToken = _tokenService.GenerateToken(user);
                     await _userRepository.AddAsync(user).ConfigureAwait(false);
                 }
 

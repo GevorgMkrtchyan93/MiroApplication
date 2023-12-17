@@ -11,8 +11,8 @@ using Miro.Server.Entities;
 namespace Miro.Server.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20231123121424_Init")]
-    partial class Init
+    [Migration("20231217172541_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

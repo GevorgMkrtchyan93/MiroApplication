@@ -9,5 +9,6 @@ namespace Miro.Client.Services
     public class UserDataService : IUserDataService
     {
         public ResultModel<User>? ResultInfo { get; set; }
+
     }
 }

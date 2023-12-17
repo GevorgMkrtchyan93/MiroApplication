@@ -24,7 +24,14 @@ namespace Miro.Server
 
             // Configure DbContext
             builder.Services.AddDbContext<DBContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("Connect2")));
+                  options.UseSqlServer(builder.Configuration.GetConnectionString("Connect2")));
+
+            builder.Services.AddScoped<ITokenService<User>>(provider =>
+                  new TokenService<User>(
+                      builder.Configuration["JwtSettings:SecretKey"],
+                      provider.GetRequiredService<DBContext>(),
+                      provider.GetRequiredService<IRepository<User>>()
+                ));
 
             var app = builder.Build();
 
