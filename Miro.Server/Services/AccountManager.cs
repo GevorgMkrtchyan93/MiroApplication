@@ -39,7 +39,13 @@ namespace Miro.Server.Services
 
                 if (storedUser != null)
                 {
-                    resultModel = new ResultModel<User>(storedUser);
+                    resultModel = new ResultModel<User>(storedUser)
+                    {
+                        IsSuccess = true,
+                        Message = "User succsesfuly done login",
+                        Data = storedUser
+                    };
+                    
                     resultModel.Data.SessionToken = _tokenService.GenerateToken(user);
                     await _userRepository.UpdateAsync(resultModel.Data).ConfigureAwait(false);
                 }
@@ -87,7 +93,12 @@ namespace Miro.Server.Services
                     await _userRepository.AddAsync(user).ConfigureAwait(false);
                 }
 
-                return new ResultModel<User>(user);
+                return new ResultModel<User>(user)
+                {
+                    IsSuccess = true,
+                    Data = user,
+                    Message = "User succsesfuly done registration"
+                };
             }
             catch(Exception ex)
             {

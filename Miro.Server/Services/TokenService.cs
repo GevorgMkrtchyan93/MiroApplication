@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using Miro.Server.Entities;
 using Miro.Server.Interfaces;
+using Miro.Server.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -12,7 +13,7 @@ public class TokenService<T> : ITokenService<T> where T : class
     private readonly DbContext _dbContext;
     private readonly IRepository<User> _repository;
 
-    public TokenService(string secretKey,DbContext dbContext,IRepository<User> repository)
+    public TokenService(string secretKey, DbContext dbContext, IRepository<User> repository)
     {
         _secretKey = secretKey;
         _dbContext = dbContext;
@@ -21,22 +22,23 @@ public class TokenService<T> : ITokenService<T> where T : class
 
     public async Task<T> GetByTokenAsync(string token)
     {
- 
         var userId = DecodeToken(token);
         return null;
     }
 
-    public async Task UpdateTokenAsync(T user, string newToken)
+    public async Task<bool> UpdateTokenAsync(T user, string newToken)
     {
         if (user is User userModel)
         {
             userModel.SessionToken = newToken;
 
             await _repository.UpdateAsync(userModel).ConfigureAwait(false);
+
+            return true;
         }
         else
         {
-
+            return false;
         }
     }
 
