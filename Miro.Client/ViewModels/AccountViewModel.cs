@@ -3,6 +3,7 @@ using Miro.Client.Services;
 using Miro.Client.Views;
 
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -13,6 +14,7 @@ namespace Miro.Client.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IAuthenticationService _authenticationService;
         private IUserDataService _userDataService;
+        private readonly IUserManager _userManager;
 
         private int _userId;
 
@@ -21,7 +23,7 @@ namespace Miro.Client.ViewModels
             get => _userId;
             set
             {
-                _userId = _userDataService.ResultInfo.Data.Id;
+                _userId = value;
                 OnPropertyChanged(nameof(UserId));
             }
         }
@@ -31,7 +33,7 @@ namespace Miro.Client.ViewModels
             get => _userName;
             set
             {
-                _userName = _userDataService.ResultInfo.Data.UserName;
+                _userName = value;
                 OnPropertyChanged(nameof(UserName));
             }
         }
@@ -40,7 +42,7 @@ namespace Miro.Client.ViewModels
 
         public string? Email
         {
-            get => _userDataService.ResultInfo.Data.Email;
+            get => _email;
             set
             {
                 _email = value;
@@ -48,7 +50,7 @@ namespace Miro.Client.ViewModels
             }
         }
 
-        public AccountViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IUserDataService userDataService)
+        public AccountViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IUserDataService userDataService, IUserManager userManager)
         {
             _userDataService = userDataService;
             _authenticationService = authenticationService;
@@ -56,8 +58,17 @@ namespace Miro.Client.ViewModels
             Logout = new CommandService(CanExecute_Logout, Execute_Logout);
             JoinBoard = new CommandService(CanExecute_JoinBoard, Execute_JoinBoard);
             _userDataService = userDataService;
+            _userManager = userManager;
+            GetUserInfo();
         }
 
+        private async Task GetUserInfo()
+        {
+            var userInfo = await _userManager.GetUserByTokenId(_userDataService.UserToken).ConfigureAwait(false);
+            Email = userInfo.Email;
+            UserId = userInfo.Id;
+            UserName = userInfo.UserName;
+        }
         public ICommand Logout { get; set; }
 
         public ICommand JoinBoard { get; set; }

@@ -23,7 +23,23 @@ public class TokenService<T> : ITokenService<T> where T : class
     public async Task<T> GetByTokenAsync(string token)
     {
         var userId = DecodeToken(token);
-        return null;
+        try
+        {
+            var user = await _repository.GetByIdAsync(userId).ConfigureAwait(false);
+
+            if (typeof(T) == typeof(User))
+            {
+                return user as T;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Invalid type '{typeof(T).FullName}'.");
+            }
+        }
+        catch (Exception ex) 
+        {
+            return null;
+        }
     }
 
     public async Task<bool> UpdateTokenAsync(T user, string newToken)
@@ -51,8 +67,8 @@ public class TokenService<T> : ITokenService<T> where T : class
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, GetUserIdentifier(user))
-            }),
+            new Claim("Id", GetUserIdentifier(user))
+        }),
             Expires = DateTime.UtcNow.AddDays(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
@@ -63,21 +79,44 @@ public class TokenService<T> : ITokenService<T> where T : class
 
     private int DecodeToken(string token)
     {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_secretKey);
-
-        var validationParameters = new TokenValidationParameters
+        try
         {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ClockSkew = TimeSpan.Zero
-        };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_secretKey);
 
-        var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
-        var jwtToken = (JwtSecurityToken)validatedToken;
-        return int.Parse(principal.FindFirstValue(ClaimTypes.NameIdentifier));
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            };
+
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
+
+            // If you have a specific claim where the user ID is stored, you can retrieve it directly.
+            // For example, assuming the user ID is stored in a claim named "UserId":
+            var claims = principal.Claims.Select(c => $"{c.Type}: {c.Value}");
+            Console.WriteLine($"Decoded Claims: {string.Join(", ", claims)}");
+            var userIdClaim = principal.FindFirst("Id");
+
+            if (userIdClaim != null)
+            {
+                var userId = int.Parse(userIdClaim.Value);
+                Console.WriteLine($"Decoded user ID: {userId}");
+                return userId;
+            }
+            else
+            {
+                throw new InvalidOperationException("User ID claim not found in the token.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Token decoding failed: {ex.Message}");
+            throw; // Re-throw the exception if needed.
+        }
     }
 
     private string GetUserIdentifier(T user)

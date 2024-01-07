@@ -12,7 +12,7 @@ namespace Miro.Server.Services
         private readonly ITokenService<User> _tokenService;
         private readonly GenericMapper<RegisterModel, User> _mapperRegister;
         private readonly GenericMapper<LoginModel, User> _mapperLogin;
- 
+
         public AccountManager(IRepository<User> userRepository, ITokenService<User> tokenService)
         {
             _userRepository = userRepository;
@@ -45,9 +45,9 @@ namespace Miro.Server.Services
                         Message = "User succsesfuly done login",
                         Data = storedUser
                     };
-                    
-                    resultModel.Data.SessionToken = _tokenService.GenerateToken(user);
+
                     await _userRepository.UpdateAsync(resultModel.Data).ConfigureAwait(false);
+                    resultModel.Data.SessionToken = _tokenService.GenerateToken(user);
                 }
                 else
                 {
@@ -89,8 +89,8 @@ namespace Miro.Server.Services
 
                 if (existingUser == null)
                 {
-                    user.SessionToken = _tokenService.GenerateToken(user);
                     await _userRepository.AddAsync(user).ConfigureAwait(false);
+                    user.SessionToken = _tokenService.GenerateToken(user);
                 }
 
                 return new ResultModel<User>(user)
@@ -100,7 +100,7 @@ namespace Miro.Server.Services
                     Message = "User succsesfuly done registration"
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -111,7 +111,7 @@ namespace Miro.Server.Services
             try
             {
                 var user = await _userRepository.GetByIdAsync(userId).ConfigureAwait(false);
-                if (user!=null)
+                if (user != null)
                 {
                     user.SessionToken = null;
                     await _userRepository.UpdateAsync(user);

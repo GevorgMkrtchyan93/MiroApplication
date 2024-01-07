@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Miro.Server.Entities;
 using Miro.Server.Interfaces;
 using Miro.Server.Services;
+using System.Configuration;
 
 namespace Miro.Server
 {
@@ -21,10 +22,15 @@ namespace Miro.Server
             builder.Services.AddSignalR();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<DBContext>();
 
             // Configure DbContext
-            builder.Services.AddDbContext<DBContext>(options =>
-                  options.UseSqlServer(builder.Configuration.GetConnectionString("Connect2")));
+            //builder.Services.AddDbContext<DBContext>(options =>
+            //      options.UseSqlServer(builder.Configuration.GetConnectionString("Connect2")));
+
+            builder.Services.AddDbContext<DbContext>(options =>
+                            options.UseSqlServer(builder.Configuration.GetConnectionString("Connect2")),
+                            ServiceLifetime.Scoped);
 
             builder.Services.AddScoped<ITokenService<User>>(provider =>
                   new TokenService<User>(

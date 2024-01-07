@@ -33,11 +33,12 @@ namespace Miro.Client
             services.AddScoped<IUserDataService, UserDataService>();
             services.AddScoped<IHashingPassword,HashingPassword>();
             services.AddScoped<IRelayCommand, RelayCommand>();
+            services.AddScoped<IConfigManager, ConfigManager>();
 
             services.AddScoped<IHttpCallManager, HttpCallManager>();
             services.AddScoped<IApiClient>(serviceProvider => new ApiClient(serviceProvider.GetService<IHttpCallManager>()));
-            services.AddScoped(serviceProvider => new HttpCallManager(""));
-            services.AddScoped<IHttpCallManager>(serviceProvider => new HttpCallManager("https://localhost:7108/"));
+            services.AddScoped(serviceProvider => new HttpCallManager(serviceProvider.GetService<IConfigManager>()));
+            services.AddScoped<IHttpCallManager>(serviceProvider => new HttpCallManager(serviceProvider.GetService<IConfigManager>()));
             services.AddScoped(serviceProvider => new ApiClient(serviceProvider.GetService<IHttpCallManager>()));
             services.AddScoped<IApiClient>(serviceProvider => new ApiClient(serviceProvider.GetService<IHttpCallManager>()));
 
@@ -67,5 +68,4 @@ namespace Miro.Client
 
         public IServiceScope ApplicationScope { get; set; }
     }
-
 }

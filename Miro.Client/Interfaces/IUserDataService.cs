@@ -7,5 +7,6 @@ namespace Miro.Client.Interfaces
     {
         ResultModel<User>? ResultInfo { get; set; }
 
+        string? UserToken { get; set; }
     }
 }

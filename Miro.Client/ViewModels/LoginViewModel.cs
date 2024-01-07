@@ -83,6 +83,7 @@ namespace Miro.Client.ViewModels
                         Password = _hashingPassword.HashPassword(Password,out var salt),
                     };
                     _userDataService.ResultInfo = await _authenticationService.Login(loginModel);
+                    _userDataService.UserToken = _userDataService.ResultInfo.Data.SessionToken;
                     if (_userDataService.ResultInfo!=null)
                     {
                         _navigationService.NavigateTo(typeof(AccountView));

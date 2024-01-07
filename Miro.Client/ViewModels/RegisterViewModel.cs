@@ -111,6 +111,8 @@ namespace Miro.Client.ViewModels
                     };
 
                     _userDataService.ResultInfo = await _authenticationService.Register(registerViewModel);
+                    _userDataService.UserToken = _userDataService.ResultInfo.Data.SessionToken;
+
                     if (_userDataService.ResultInfo != null)
                     {
                         _navigationService.NavigateTo(typeof(AccountView));

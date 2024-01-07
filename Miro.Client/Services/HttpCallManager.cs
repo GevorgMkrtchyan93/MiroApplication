@@ -11,13 +11,13 @@ namespace Miro.Client.Services
 {
     public class HttpCallManager : IHttpCallManager
     {
+        private readonly IConfigManager _configManager;
         private readonly HttpClient _httpClient;
-        private readonly string _baseApiUrl = "https://localhost:7108/";
 
-        public HttpCallManager(string baseApiUrl)
+        public HttpCallManager(IConfigManager configManager)
         {
             _httpClient = new HttpClient();
-            _baseApiUrl = baseApiUrl;
+            _configManager = configManager;
         }
 
         public async Task<T> PostAsync<T>(string endpoint, object data)
@@ -26,7 +26,7 @@ namespace Miro.Client.Services
             {
                 string jsonContent = JsonConvert.SerializeObject(data);
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-                var request = new HttpRequestMessage(HttpMethod.Post, $"{_baseApiUrl}{endpoint}")
+                var request = new HttpRequestMessage(HttpMethod.Post, $"{_configManager.BaseUrl}{endpoint}")
                 {
                     Content = content
                 };
