@@ -46,8 +46,8 @@ namespace Miro.Server.Services
                         Data = storedUser
                     };
 
+                    resultModel.Data.SessionToken = _tokenService.GenerateToken(storedUser);
                     await _userRepository.UpdateAsync(resultModel.Data).ConfigureAwait(false);
-                    resultModel.Data.SessionToken = _tokenService.GenerateToken(user);
                 }
                 else
                 {
@@ -91,6 +91,9 @@ namespace Miro.Server.Services
                 {
                     await _userRepository.AddAsync(user).ConfigureAwait(false);
                     user.SessionToken = _tokenService.GenerateToken(user);
+
+                    //this is do because token genereted but not updated in db
+                    await _userRepository.UpdateAsync(user).ConfigureAwait(false);
                 }
 
                 return new ResultModel<User>(user)

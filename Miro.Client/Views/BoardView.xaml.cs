@@ -66,7 +66,7 @@ namespace Miro.Client.Views
 
         //        _currentLine.StrokeThickness = 2;
 
-        //        DrawingCanvas.Children.Add(_currentLine);
+        //     DrawingCanvas.Children.Add(_currentLine);
         //    });
         //}
     }

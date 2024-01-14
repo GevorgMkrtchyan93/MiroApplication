@@ -6,6 +6,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Miro.Client.ViewModels
 {
@@ -109,10 +112,12 @@ namespace Miro.Client.ViewModels
 
         private void StartDrawing(object parameter)
         {
+            IsDrawing = true;
         }
 
         private void EndDrawing(object parameter)
         {
+            IsDrawing = false;
         }
 
         private void Draw(object parameter)
@@ -123,21 +128,21 @@ namespace Miro.Client.ViewModels
             }
         }
 
-        private void DrawLine(Point start, Point end)
-        {
-            //Dispatcher.Invoke(() =>
-            //{
-            //    var _currentLine = new Line();
-            //    _currentLine.Stroke = Brushes.Black;
-            //    _currentLine.X1 = start.X;
-            //    _currentLine.Y1 = start.Y;
-            //    _currentLine.X2 = end.X;
-            //    _currentLine.Y2 = end.Y;
+        //private void DrawLine(Point start, Point end)
+        //{
+        //    Dispatcher.Invoke(() =>
+        //    {
+        //        var _currentLine = new Line();
+        //        _currentLine.Stroke = Brushes.Black;
+        //        _currentLine.X1 = start.X;
+        //        _currentLine.Y1 = start.Y;
+        //        _currentLine.X2 = end.X;
+        //        _currentLine.Y2 = end.Y;
 
-            //    _currentLine.StrokeThickness = 2;
+        //        _currentLine.StrokeThickness = 2;
 
-            //    DrawingCanvas.Children.Add(_currentLine);
-            //});
-        }
+        //        DrawingCanvas.Children.Add(_currentLine);
+        //    });
+        //}
     }
 }

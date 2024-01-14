@@ -6,9 +6,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Canvas x:Name="DrawingCanvas" Grid.Row="1" Background="White"
-                MouseLeftButtonDown="{Binding  DrawingCanvas_MouseLeftButtonDown, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+        <!--<Canvas x:Name="DrawingCanvas" Grid.Row="1" Background="White">-->
+            <!--MouseLeftButtonDown="{Binding  DrawingCanvas_MouseLeftButtonDown, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                 MouseLeftButtonUp="{Binding DrawingCanvas_MouseLeftButtonUp,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                MouseMove="{Binding DrawingCanvas_MouseMove, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                MouseMove="{Binding DrawingCanvas_MouseMove, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>-->
     </Grid>
 </Page>
